@@ -6,7 +6,10 @@ API_KEY = "AIzaSyCcdFlnejJo3zVBaKTre4bdYfphKOe7_Aw"
 BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
 
 # Initialize the OpenAI client
-client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
+client = OpenAI(
+    api_key=API_KEY,
+    base_url=BASE_URL
+)
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -33,7 +36,6 @@ def generate_itinerary():
     try:
         response = client.chat.completions.create(
             model="gemini-1.5-flash",
-            n=1,
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
                 {"role": "user", "content": travel_prompt}
