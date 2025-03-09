@@ -8,7 +8,7 @@ API_KEY = "AIzaSyCcdFlnejJo3zVBaKTre4bdYfphKOe7_Aw"  # Replace with your actual 
 genai.configure(api_key=API_KEY)
 
 # Initialize the model
-model = genai.GenerativeModel('gemini-pro')
+model = genai.GenerativeModel('models/text-bison-001')  # Use the correct model name
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -33,7 +33,7 @@ def generate_itinerary():
     travel_prompt = "Generate a travel itinerary for my next vacation: " + vacation_description
     
     try:
-        # Generate content using the Google Generative AI model
+        # Generate content using the Google Generative Language API
         response = model.generate_content(travel_prompt)
         itinerary = response.text
         return jsonify({"travel_prompt": itinerary})
