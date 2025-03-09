@@ -1,15 +1,14 @@
 from flask import Flask, request, jsonify, render_template
-from openai import OpenAI
+import google.generativeai as genai
 
 # Global configuration
-API_KEY = "AIzaSyCcdFlnejJo3zVBaKTre4bdYfphKOe7_Aw"
-BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
+API_KEY = "AIzaSyCcdFlnejJo3zVBaKTre4bdYfphKOe7_Aw"  # Replace with your actual Google API key
 
-# Initialize the OpenAI client
-client = OpenAI(
-    api_key=API_KEY,
-    base_url=BASE_URL
-)
+# Configure the Google Generative AI client
+genai.configure(api_key=API_KEY)
+
+# Initialize the model
+model = genai.GenerativeModel('gemini-pro')
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -34,15 +33,9 @@ def generate_itinerary():
     travel_prompt = "Generate a travel itinerary for my next vacation: " + vacation_description
     
     try:
-        response = client.chat.completions.create(
-            model="gemini-1.5-flash",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": travel_prompt}
-            ]
-        )
-        
-        itinerary = response.choices[0].message.content
+        # Generate content using the Google Generative AI model
+        response = model.generate_content(travel_prompt)
+        itinerary = response.text
         return jsonify({"travel_prompt": itinerary})
     
     except Exception as e:
